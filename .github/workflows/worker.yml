@@ -2,6 +2,12 @@ name: Worker
 
 on:
   push:
+    branches: [main, develop-ci]
+    paths:
+      - services/worker/**
+      - libs/common/**
+      - .github/workflows/worker.yml
+  merge_request:
     branches: [main]
     paths:
       - services/worker/**
