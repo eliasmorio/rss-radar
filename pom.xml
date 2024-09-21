@@ -26,7 +26,7 @@
         <module>services/web-api</module>
         <module>services/worker</module>
         <module>libs/common</module>
-<!--        <module>services/frontend</module>-->
+        <module>services/frontend</module>
 <!--        <module>services/scheduler</module>-->
     </modules>
     
