@@ -45,6 +45,8 @@ public class CrawlerService {
         }
       
         Set<Article> articles = parseArticles(feedContent, feed);
+        Integer newArticlesCount = articles.size();
+        log.info("Found {} new articles for feed {}", newArticlesCount, feed);
         articles.forEach(this::trySaveArticle);
         
         feed.setLastFetchDate(LocalDateTime.now(UTC)); 
@@ -55,7 +57,7 @@ public class CrawlerService {
             articleRepository.save(article);
         } catch (DataIntegrityViolationException e) {
             if (!e.getMessage().contains("rr_article_hash_key")) {
-                throw e;
+                log.warn("Error while saving article {}", article, e);
             }
             log.info("Article already exists: {}", article.getLink());
         }
