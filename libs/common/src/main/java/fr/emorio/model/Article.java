@@ -13,6 +13,9 @@ public class Article {
     private String title;
     private String body;
     private String link;
+    private LocalDateTime publicationDate;
+    private Feed feedSource;
+    private Long feedId;
 
     @Override
     public boolean equals(Object o) {
@@ -27,8 +30,7 @@ public class Article {
         return Objects.hash(title, body, link);
     }
 
-    private LocalDateTime publicationDate;
-    private Feed feedSource;
+    
     
     
 }
