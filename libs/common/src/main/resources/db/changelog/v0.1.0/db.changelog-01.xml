@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="create-sequences" author="emorio">
+        <createSequence sequenceName="RR_FEED_SEQ" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="RR_ARTICLE_SEQ" startValue="1" incrementBy="1"/>
+    </changeSet>
+    
+    <changeSet id="create-tables" author="emorio">
+        <createTable tableName="RR_FEED">
+            <column name="ID" type="BIGINT" defaultValueComputed="nextval('RR_FEED_SEQ')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="URL" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="TEXT"/>
+            <column name="LOCALE" type="VARCHAR(4)"/>
+            <column name="LAST_FETCH_DATE" type="TIMESTAMP"/>
+            <column name="FEED_CLASS" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="RR_ARTICLE">
+            <column name="ID" type="BIGINT" defaultValueComputed="nextval('RR_ARTICLE_SEQ')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="TITLE" type="TEXT">
+            </column>
+            <column name="BODY" type="TEXT"/>
+            <column name="link" type="VARCHAR(255)"/>
+            <column name="PUBLICATION_DATE" type="TIMESTAMP"/>
+            <column name="FEED_ID" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_RR_ARTICLE_RR_FEED"/>
+            </column>
+            <column name="HASH" type="int">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        
+        <addForeignKeyConstraint baseTableName="RR_ARTICLE"
+                                 baseColumnNames="FEED_ID"
+                                 constraintName="FK_RR_ARTICLE_RR_FEED"
+                                 referencedTableName="RR_FEED"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+    
+    <changeSet id="create-indexes" author="emorio">
+        <createIndex indexName="IDX_RR_ARTICLE_FEED_ID" tableName="RR_ARTICLE">
+            <column name="FEED_ID"/>
+        </createIndex>
+        <createIndex indexName="IDX_RR_FEED_URL" tableName="RR_FEED">
+            <column name="URL"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet id="insert-feed" author="emorio" context="dev">
+        <sql>
+            INSERT INTO RR_FEED (URL, TITLE, DESCRIPTION, LOCALE, FEED_CLASS)
+            VALUES ('https://www.lemonde.fr/rss/une.xml', 'Le Monde', 'Les actualités du Monde', 'fr', 'RssFeed');
+            INSERT INTO RR_FEED (URL, TITLE, DESCRIPTION, LOCALE, FEED_CLASS)
+            VALUES ('https://www.lemonde.fr/etats-unis/rss_full.xml', 'Le Figaro', 'Les actualités du Figaro', 'fr', 'RssFeed');
+        </sql>
+    
+    </changeSet>
+    
+    
+</databaseChangeLog>
