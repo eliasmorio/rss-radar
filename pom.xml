@@ -25,9 +25,9 @@
     <modules>
         <module>services/web-api</module>
         <module>services/worker</module>
-        <module>services/frontend</module>
         <module>libs/common</module>
-        <module>services/scheduler</module>
+<!--        <module>services/frontend</module>-->
+<!--        <module>services/scheduler</module>-->
     </modules>
     
     <dependencies>
