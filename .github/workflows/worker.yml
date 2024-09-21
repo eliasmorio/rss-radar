@@ -6,7 +6,7 @@ on:
     paths:
       - services/worker/**
       - libs/common/**
-      - .github/workflows/worker.yml
+      - .github/workflows/worker.yml 
 
 
 jobs:
