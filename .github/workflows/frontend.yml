@@ -11,6 +11,9 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
+    defaults: 
+      run: 
+        working-directory: services/frontend
 
     steps:
       - name: Checkout
@@ -36,7 +39,6 @@ jobs:
 
       - name: Build docker image
         run: docker build . -t ${{ github.sha }}
-        working-directory: services/frontend
 
       - name: Push Docker image
         run: |
