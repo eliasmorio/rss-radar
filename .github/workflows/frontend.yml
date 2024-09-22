@@ -1,4 +1,5 @@
 name: Frontend
+# Angular frontend workflow
 
 on:
   push:
@@ -6,10 +7,41 @@ on:
     paths:
       - services/frontend/**
       - .github/workflows/frontend.yml
-  
-  
+
 jobs:
   run:
-    uses: ./.github/workflows/service-workflow.yml
-    with:
-      service: frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build
+        run: npm run build
+        
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build docker image
+        run: docker build . -t ${{ github.sha }}
+        working-directory: services/frontend
+
+      - name: Push Docker image
+        run: |
+          docker tag ${{ github.sha }} ghcr.io/${{ github.repository }}/${{ inputs.service }}:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository }}/${{ inputs.service }}:${{ github.sha }}
+        
+      
+    
