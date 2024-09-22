@@ -1,0 +1,27 @@
+<div class="search-container">
+  <input
+    type="text"
+    placeholder="Search..."
+    [(ngModel)]="searchTerm"
+    (keyup.enter)="onSearch()"
+  />
+  <button (click)="onSearch()">Search</button>
+</div>
+
+@if (results) {
+  <div> <!-- Use safe navigation operator to prevent errors -->
+    <h2>Search Results ({{ results.totalElements }} results)</h2>
+    <ul>
+      @for (article of results.content; track article.id) {
+        <li>
+          <h3><a [href]="article.link" target="_blank">{{ article.title }}</a></h3>
+          <p>{{ article.body }}</p>
+          <p><small>Published on: {{ article.publicationDate }}</small></p>
+          <p><small>Source: {{ article.feedSource.title }}</small></p>
+        </li>
+      }
+    </ul>
+  </div>
+}
+
+

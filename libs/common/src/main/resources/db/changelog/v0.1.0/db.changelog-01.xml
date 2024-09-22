@@ -22,7 +22,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="DESCRIPTION" type="TEXT"/>
-            <column name="LOCALE" type="VARCHAR(4)"/>
+            <column name="LOCALE" type="VARCHAR(10)"/>
             <column name="LAST_FETCH_DATE" type="TIMESTAMP"/>
             <column name="FEED_CLASS" type="VARCHAR(25)">
                 <constraints nullable="false"/>
@@ -36,12 +36,12 @@
             <column name="TITLE" type="TEXT">
             </column>
             <column name="BODY" type="TEXT"/>
-            <column name="link" type="VARCHAR(255)"/>
+            <column name="link" type="TEXT"/>
             <column name="PUBLICATION_DATE" type="TIMESTAMP"/>
             <column name="FEED_ID" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="FK_RR_ARTICLE_RR_FEED"/>
             </column>
-            <column name="HASH" type="int">
+            <column name="HASH" type="VARCHAR(32)">
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
@@ -67,7 +67,14 @@
             INSERT INTO RR_FEED (URL, TITLE, DESCRIPTION, LOCALE, FEED_CLASS)
             VALUES ('https://www.lemonde.fr/rss/une.xml', 'Le Monde', 'Les actualités du Monde', 'fr', 'RssFeed');
             INSERT INTO RR_FEED (URL, TITLE, DESCRIPTION, LOCALE, FEED_CLASS)
-            VALUES ('https://www.lemonde.fr/etats-unis/rss_full.xml', 'Le Figaro', 'Les actualités du Figaro', 'fr', 'RssFeed');
+            VALUES ('https://www.afp.com/rss.xml', 'AFP.com', '', 'fr', 'RssFeed');
+            INSERT INTO RR_FEED (URL, TITLE, DESCRIPTION, LOCALE, FEED_CLASS)
+            VALUES ('https://www.euronews.com/rss', 'Latest News From Euronews | Euronews RSS', '', 'en', 'RssFeed');
+            INSERT INTO RR_FEED (URL, TITLE, DESCRIPTION, LOCALE, FEED_CLASS)
+            VALUES ('https://www.economie.gouv.fr/rss/toutesactualites', 'Flux RSS Toutes les actualités', '', 'fr', 'RssFeed');
+            INSERT INTO RR_FEED (URL, TITLE, DESCRIPTION, LOCALE, FEED_CLASS)
+            VALUES ('https://rss.nytimes.com/services/xml/rss/nyt/World.xml', 'NYT > World News', '', 'en-us', 'RssFeed');
+            
         </sql>
     
     </changeSet>
