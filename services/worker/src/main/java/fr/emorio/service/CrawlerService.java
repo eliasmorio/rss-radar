@@ -52,7 +52,7 @@ public class CrawlerService {
                 .forEach(article -> article.setFeed(feed));
 
         log.info("Found {} new articles for feed {}", articles.size(), feed);
-        articleRepository.saveAll(articles);
+        articles.forEach(this::trySaveArticle);
         articles.forEach(this::explore);
         
         feed.setLastFetchDate(LocalDateTime.now(UTC));
