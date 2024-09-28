@@ -2,8 +2,8 @@ name: Frontend
 # Angular frontend workflow
 
 on:
-  push:
-    branches: [main]
+  release:
+    types: [published]
     paths:
       - services/frontend/**
       - .github/workflows/frontend.yml
@@ -42,8 +42,9 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker tag ${{ github.sha }} ghcr.io/${{ github.repository }}/${{ inputs.service }}:${{ github.sha }}
-          docker push ghcr.io/${{ github.repository }}/${{ inputs.service }}:${{ github.sha }}
+          docker tag ${{ github.sha }} ghcr.io/${{ github.repository }}/frontend:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository }}/frontend:${{ github.sha }}
+          docker tag ${{ github.sha }} ghcr.io/${{ github.repository }}/frontend:latest
         
       
     
