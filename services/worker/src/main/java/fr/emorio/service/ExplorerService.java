@@ -38,7 +38,9 @@ public class ExplorerService {
 
     }
     public void explore(Article article) throws IOException {
-        Document document = Jsoup.connect(article.getLink()).get();
+        Document document = Jsoup.connect(article.getLink())
+                .userAgent("curl/7.64.1")
+                .get();
 
         List<Element> rssLinks = document.select(RSS_MIME_TYPE);
         List<Element> atomLinks = document.select(ATOM_MIME_TYPE);
@@ -46,11 +48,15 @@ public class ExplorerService {
         //merge rssLinks and atomLinks
         rssLinks.addAll(atomLinks);
 
+        log.info("Found {} feed links for article {}", rssLinks.size(), article.getLink());
+
         for (Element link : rssLinks) {
             String feedUrl = link.attr("href");
             if (feedRepository.existsByUrl(feedUrl)) {
                 continue;
             }
+
+            log.info("Found new feed: {}", feedUrl);
 
             Feed feed = Feed.builder()
                     .url(feedUrl)
@@ -58,7 +64,6 @@ public class ExplorerService {
             feedRepository.save(feed);
             rabbitTemplate.convertAndSend("crawl-queue", feed.getId());
         }
-
     }
 
 }

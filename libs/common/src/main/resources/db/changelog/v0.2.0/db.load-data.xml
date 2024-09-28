@@ -9,19 +9,18 @@
     <changeSet id="1" author="emorio">
         <sql>
             INSERT INTO RR_FEED (ID, URL)
-                VALUES (1, 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml');
+            VALUES (1, 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml');
             INSERT INTO RR_FEED (ID, URL)
-                VALUES (2, 'https://www.france24.com/fr/rss');
+            VALUES (2, 'https://www.france24.com/fr/rss');
             INSERT INTO RR_FEED (ID, URL)
-                VALUES (3, 'https://www.lemonde.fr/rss/une.xml');
+            VALUES (3, 'https://www.lemonde.fr/rss/une.xml');
             INSERT INTO RR_FEED (ID, URL)
-                VALUES (4, 'https://www.euronews.com/rss');
+            VALUES (4, 'https://www.euronews.com/rss');
             INSERT INTO RR_FEED (ID, URL)
-                VALUES (5, 'https://www.bbc.com/news/10628494');
+            VALUES (5, 'https://www.theguardian.com/world/rss');
             INSERT INTO RR_FEED (ID, URL)
-                VALUES (6, 'https://www.theguardian.com/world/rss');
-            INSERT INTO RR_FEED (ID, URL)
-                VALUES (7, 'https://feeds.bbci.co.uk/news/world/rss.xml');
+            VALUES (6, 'https://feeds.bbci.co.uk/news/world/rss.xml');
+            select nextval('rr_feed_seq');
         </sql>
     </changeSet>
 

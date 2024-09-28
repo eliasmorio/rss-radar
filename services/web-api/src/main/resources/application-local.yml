@@ -6,4 +6,4 @@ spring:
     password: "guest"
 
   liquibase:
-    enabled: false
+    enabled: true
