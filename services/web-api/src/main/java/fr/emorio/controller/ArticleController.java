@@ -25,19 +25,14 @@ public class ArticleController {
     public ResponseEntity<Page<Article>> searchArticles(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "publicationDate,desc") String[] sort,
-            @RequestParam String query) {
-        
+            @RequestParam(defaultValue = "publication_date,desc") String[] sort,
+            @RequestParam String query
+    ) {
         if (query.isBlank()) {
             return ResponseEntity.badRequest().build();
         }
-
-        // Create a PageRequest object
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Order.desc(sort[0])));
-
-        // Fetch paginated results
         Page<Article> articles = articleService.searchArticles(pageRequest, query);
-
         return ResponseEntity.ok(articles);
     }
     

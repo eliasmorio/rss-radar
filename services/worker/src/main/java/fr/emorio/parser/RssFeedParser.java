@@ -1,49 +1,76 @@
 package fr.emorio.parser;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
-import static java.time.ZoneOffset.UTC;
 
+@Slf4j
 public class RssFeedParser extends FeedParser {
-    
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss Z");
-    
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.RFC_1123_DATE_TIME;
+    private static final ZoneId UTC = ZoneId.of("UTC");
+
     @Override
-    protected Set<Element> parseNodeArticles(Element rawContent) {
-        Set<Element> articles = new HashSet<>();
-        NodeList nodeList = rawContent.getElementsByTagName("item");
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            articles.add((Element) nodeList.item(i));
+    protected String parseFeedTitle(Document feedContent) {
+        Element titleElement = feedContent.selectFirst("title");
+        return titleElement != null ? titleElement.text() : "";
+    }
+
+    @Override
+    protected String parseFeedDescription(Document feedContent) {
+        Element descriptionElement = feedContent.selectFirst("description");
+        return descriptionElement != null ? descriptionElement.text() : "";
+    }
+
+    @Override
+    protected Locale parseFeedLocale(Document feedContent) {
+        Element languageElement = feedContent.selectFirst("language");
+        return languageElement != null ? Locale.forLanguageTag(languageElement.text()) : Locale.getDefault();
+    }
+
+    @Override
+    protected Set<Element> parseArticles(Document rawContent) {
+        return new HashSet<>(rawContent.select("item"));
+    }
+
+    @Override
+    protected String parseArticleTitle(Element rawContent) {
+        Element titleElement = rawContent.selectFirst("title");
+        return titleElement != null ? titleElement.text() : "";
+    }
+
+    @Override
+    protected String parseArticleBody(Element rawContent) {
+        Element descriptionElement = rawContent.selectFirst("description");
+        return descriptionElement != null ? descriptionElement.text() : "";
+    }
+
+    @Override
+    protected LocalDateTime parseArticlePublicationDate(Element rawContent) {
+        try {
+            Element pubDateElement = rawContent.selectFirst("pubDate");
+            if (pubDateElement != null) {
+                ZonedDateTime zonedDateTime = ZonedDateTime.parse(pubDateElement.text(), DATE_FORMATTER);
+                return zonedDateTime.withZoneSameInstant(UTC).toLocalDateTime(); // Convert to UTC
+            }
+        } catch (Exception e) {
+            log.warn("Error while parsing publication date for article: {}", rawContent.toString());
         }
-        return articles;
+        return LocalDateTime.now();
     }
 
     @Override
-    protected String parseTitle(Element rawContent) {
-        return rawContent.getElementsByTagName("title").item(0).getTextContent();
+    protected String parseArticleLink(Element rawContent) {
+        Element linkElement = rawContent.selectFirst("link");
+        return linkElement != null ? linkElement.text() : "";
     }
 
-    @Override
-    protected String parseBody(Element rawContent) {
-        return rawContent.getElementsByTagName("description").item(0).getTextContent();
-    }
-
-    @Override
-    protected LocalDateTime parsePublicationDate(Element rawContent) {
-        var zonedDateTime = ZonedDateTime.parse(rawContent.getElementsByTagName("pubDate").item(0).getTextContent(), DATE_FORMATTER);
-        // to UTC
-        return zonedDateTime.withZoneSameInstant(UTC).toLocalDateTime();
-    }
-
-    @Override
-    protected String parseLink(Element rawContent) {
-        return rawContent.getElementsByTagName("link").item(0).getTextContent();
-    }
 }

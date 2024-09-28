@@ -2,13 +2,11 @@ name: Worker
 
 on:
   push:
-    branches: [main, develop-ci]
+    branches: [main]
     paths:
       - services/worker/**
       - libs/common/**
-      - .github/workflows/worker.yml 
-  pull_request:
-    branches: [main, develop]
+      - .github/workflows/worker.yml
 
 
 jobs:
