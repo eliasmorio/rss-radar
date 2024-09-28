@@ -17,10 +17,15 @@
           <h3><a [href]="article.link" target="_blank">{{ article.title }}</a></h3>
           <p>{{ article.body }}</p>
           <p><small>Published on: {{ article.publicationDate }}</small></p>
-          <p><small>Source: {{ article.feedSource.title }}</small></p>
         </li>
       }
     </ul>
+    @if (results.totalPages > 1) {
+      <div>
+        <button (click)="onPreviousPage()" [disabled]="results.first">Previous Page</button>
+        <button (click)="onNextPage()" [disabled]="results.last">Next Page</button>
+      </div>
+    }
   </div>
 }
 

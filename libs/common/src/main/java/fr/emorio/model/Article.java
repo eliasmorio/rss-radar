@@ -1,21 +1,33 @@
 package fr.emorio.model;
 
-import lombok.Builder;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Builder
+@Entity(name = "RR_ARTICLE")
+@AllArgsConstructor
 public class Article {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column(columnDefinition = "TEXT")
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String body;
+    @Column(columnDefinition = "TEXT", unique = true)
     private String link;
+    @Column(name = "publication_date")
     private LocalDateTime publicationDate;
-    private Feed feedSource;
-    private Long feedId;
+
+    @ManyToOne
+    private Feed feed;
 
     @Override
     public boolean equals(Object o) {
@@ -29,8 +41,4 @@ public class Article {
     public int hashCode() {
         return Objects.hash(title, body, link);
     }
-
-    
-    
-    
 }

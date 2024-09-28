@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchResults } from '../model';
+import { SearchResults, Article } from '../model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class SearchService {
 
   constructor(private http: HttpClient) {}
 
-  search(query: string, page: number = 0, size: number = 20, sort: string = 'publicationDate,desc'): Observable<SearchResults> {
+  search(query: string, page: number = 0, size: number = 20, sort: string = 'publication_date,desc'): Observable<SearchResults> {
     // Construct query parameters
     let params = {
       query,

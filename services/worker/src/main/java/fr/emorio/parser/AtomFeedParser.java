@@ -1,53 +1,71 @@
 package fr.emorio.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 @Slf4j
 public class AtomFeedParser extends FeedParser {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss+00:00";
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
 
     @Override
-    protected Set<Element> parseNodeArticles(Element rawContent) {
-        Set<Element> articles = new HashSet<>();
-        NodeList nodeList = rawContent.getElementsByTagName("entry");
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            articles.add((Element) nodeList.item(i));
-        }
-        return articles;
+    protected String parseFeedTitle(Document feedContent) {
+        Element titleElement = feedContent.selectFirst("title");
+        return titleElement != null ? titleElement.text() : "";
     }
 
     @Override
-    protected String parseTitle(Element rawContent) {
-        return rawContent.getElementsByTagName("title").item(0).getTextContent();
+    protected String parseFeedDescription(Document feedContent) {
+        Element subtitleElement = feedContent.selectFirst("subtitle");
+        return subtitleElement != null ? subtitleElement.text() : "";
     }
 
     @Override
-    protected String parseBody(Element rawContent) {
-        return rawContent.getElementsByTagName("content").item(0).getTextContent();
+    protected Locale parseFeedLocale(Document feedContent) {
+        return Locale.getDefault();
     }
 
     @Override
-    protected LocalDateTime parsePublicationDate(Element rawContent) {
+    protected Set<Element> parseArticles(Document rawContent) {
+        return new HashSet<>(rawContent.select("entry"));
+    }
+
+
+    @Override
+    protected String parseArticleTitle(Element rawContent) {
+        Element titleElement = rawContent.selectFirst("title");
+        return titleElement != null ? titleElement.text() : "";
+    }
+
+    @Override
+    protected String parseArticleBody(Element rawContent) {
+        Element contentElement = rawContent.selectFirst("content");
+        return contentElement != null ? contentElement.text() : "";
+    }
+
+    @Override
+    protected LocalDateTime parseArticlePublicationDate(Element rawContent) {
         try {
-            return LocalDateTime.parse(rawContent.getElementsByTagName("updated").item(0).getTextContent(), DATE_FORMATTER);
+            Element updatedElement = rawContent.selectFirst("updated");
+            if (updatedElement != null) {
+                return LocalDateTime.parse(updatedElement.text(), DATE_FORMATTER);
+            }
         } catch (Exception e) {
             log.warn("Error while parsing publication date for article: {}", rawContent.toString());
-            return LocalDateTime.now();
         }
+        return LocalDateTime.now();
     }
-    
+
     @Override
-    protected String parseLink(Element rawContent) {
-        return rawContent.getElementsByTagName("link").item(0).getAttributes().getNamedItem("href").getTextContent();
+    protected String parseArticleLink(Element rawContent) {
+        Element linkElement = rawContent.selectFirst("link[href]");
+        return linkElement != null ? linkElement.attr("href") : "";
     }
 
 }
