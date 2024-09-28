@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.time.ZoneOffset.UTC;
 
@@ -47,12 +48,13 @@ public class CrawlerService {
 
         log.info("Found {} articles for feed {}", articles.size(), feed);
 
-        articles.stream()
-                .filter(article -> !articleRepository.existsByLink(article.getLink()))
-                .forEach(article -> article.setFeed(feed));
+        articles = articles.stream()
+                    .filter(article -> !articleRepository.existsByLink(article.getLink()))
+                    .collect(Collectors.toSet());
+        articles.forEach(article -> article.setFeed(feed));
+        articles.forEach(this::trySaveArticle);
 
         log.info("Found {} new articles for feed {}", articles.size(), feed);
-        articles.forEach(this::trySaveArticle);
         articles.forEach(this::explore);
         
         feed.setLastFetchDate(LocalDateTime.now(UTC));
