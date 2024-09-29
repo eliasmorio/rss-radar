@@ -1,6 +1,12 @@
 name: Worker
 
 on:
+  push:
+    branches: [develop]
+    paths:
+      - services/worker/**
+      - libs/common/**
+      - .github/workflows/worker.yml
   release:
     branches: [main]
     paths:
