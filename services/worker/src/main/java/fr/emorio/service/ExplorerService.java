@@ -35,7 +35,6 @@ public class ExplorerService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
     public void explore(Article article) throws IOException {
         Document document = Jsoup.connect(article.getLink())
@@ -60,6 +59,7 @@ public class ExplorerService {
 
             Feed feed = Feed.builder()
                     .url(feedUrl)
+                    .sourceArticle(article)
                     .build();
             feedRepository.save(feed);
             rabbitTemplate.convertAndSend("crawl-queue", feed.getId());
