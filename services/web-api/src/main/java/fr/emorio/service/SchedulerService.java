@@ -15,7 +15,8 @@ public class SchedulerService {
 
     @Scheduled(cron = "0 0 * * * *")
     public void schedule() {
-        feedRepository.findAll().forEach(feed -> rabbitTemplate.convertAndSend("crawl-queue", feed.getUrl()));
+        feedRepository.findAll()
+                .forEach(feed -> rabbitTemplate.convertAndSend("crawl-queue", feed.getId()));
     }
 
 
