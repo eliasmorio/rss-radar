@@ -4,6 +4,10 @@ spring:
     username: rss-radar
     password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
     
   rabbitmq:
     host: "rabbitmq"
@@ -13,3 +17,4 @@ spring:
   
   liquibase:
     change-log: classpath*:db/changelog/db.changelog-master.xml
+    enabled: true

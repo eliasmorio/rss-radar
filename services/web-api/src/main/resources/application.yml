@@ -8,6 +8,7 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+
   rabbitmq:
     host: "rabbitmq"
     port: 5672
