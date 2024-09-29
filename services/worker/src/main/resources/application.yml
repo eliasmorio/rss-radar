@@ -6,10 +6,10 @@ spring:
     driver-class-name: org.postgresql.Driver
     
   rabbitmq:
-    host: "localhost"
+    host: "rabbitmq"
     port: 5672
-    username: "admin"
-    password: "secret"
+    username: "guest"
+    password: "guest"
   
   liquibase:
     change-log: classpath*:db/changelog/db.changelog-master.xml
