@@ -1,0 +1,142 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-config
+  namespace: rss-radar
+data:
+  definitions.json: |
+    {
+      "rabbit_version": "4.0.2",
+      "rabbitmq_version": "4.0.2",
+      "product_name": "RabbitMQ",
+      "product_version": "4.0.2",
+      "users": [
+        {
+          "name": "guest",
+          "password_hash": "hKN70RyrSEIg7W+B+kL3WIDhEE67iDbbDI6w0uQO9GTi1xtk",
+          "hashing_algorithm": "rabbit_password_hashing_sha256",
+          "tags": [
+            "administrator"
+          ],
+          "limits": {}
+        }
+      ],
+      "vhosts": [
+        {
+          "name": "/",
+          "description": "Default virtual host",
+          "tags": [],
+          "metadata": {
+            "description": "Default virtual host",
+            "tags": []
+          }
+        }
+      ],
+      "permissions": [
+        {
+          "user": "guest",
+          "vhost": "/",
+          "configure": ".*",
+          "write": ".*",
+          "read": ".*"
+        }
+      ],
+      "topic_permissions": [],
+      "parameters": [],
+      "global_parameters": [
+        {
+          "name": "internal_cluster_id",
+          "value": "rabbitmq-cluster-id-D2iAMyDZprNoGKhh5GApcA"
+        }
+      ],
+      "policies": [],
+      "queues": [
+        {
+          "name": "explore-queue",
+          "vhost": "/",
+          "durable": true,
+          "auto_delete": false,
+          "arguments": {
+            "x-queue-type": "classic"
+          }
+        },
+        {
+          "name": "crawl-queue",
+          "vhost": "/",
+          "durable": true,
+          "auto_delete": false,
+          "arguments": {
+            "x-queue-type": "classic"
+          }
+        }
+      ],
+      "exchanges": [],
+      "bindings": []
+    }
+  rabbitmq.config: |
+    [
+      {rabbit, [
+        {loopback_users, []},
+        {vm_memory_high_watermark, 0.7},
+        {vm_memory_high_watermark_paging_ratio, 0.8},
+        {log_levels, [{channel, warning}, {connection, warning}, {federation, warning}, {mirroring, info}]},
+        {heartbeat, 10}
+      ]},
+      {rabbitmq_management, [
+          {load_definitions, "/opt/definitions.json"}
+      ]}
+    ].
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+  namespace: rss-radar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:4-management
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: "admin"
+            - name: RABBITMQ_DEFAULT_PASS
+              value: "secret"
+          volumeMounts:
+            - name: rabbitmq-config-volume
+              mountPath: /opt/definitions.json
+              subPath: definitions.json
+            - name: rabbitmq-config-volume
+              mountPath: /etc/rabbitmq/rabbitmq.config
+              subPath: rabbitmq.config
+      volumes:
+        - name: rabbitmq-config-volume
+          configMap:
+            name: rabbitmq-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: rss-radar
+spec:
+  ports:
+    - port: 5672
+      targetPort: 5672
+      name: amqp
+    - port: 15672
+      targetPort: 15672
+      name: management
+  selector:
+    app: rabbitmq

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+
+    <changeSet id="1" author="emorio">
+        <sql>
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (7, 'https://www.lefigaro.fr/rss/figaro_actualites.xml');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (8, 'https://www.lefigaro.fr/rss/figaro_economie.xml');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (9, 'https://www.lefigaro.fr/rss/figaro_culture.xml');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (10, 'https://www.lefigaro.fr/rss/figaro_lifestyle.xml');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (11, 'https://www.lefigaro.fr/rss/figaro_sport.xml');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (12, 'https://www.lefigaro.fr/rss/figaro_style.xml');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (15, 'https://www.ouest-france.fr/rss/france');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (16, 'https://www.ouest-france.fr/rss/une');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (17, 'https://www.ouest-france.fr/rss/monde');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (18, 'https://dwh.lequipe.fr/api/edito/rss?path=/');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (19, 'https://www.francetvinfo.fr/titres.rss');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (20, 'https://www.francetvinfo.fr/france.rss');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (21, 'https://www.francetvinfo.fr/monde.rss');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (22, 'https://www.francetvinfo.fr/economie.rss');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (23, 'https://www.francetvinfo.fr/culture.rss');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (24, 'https://www.francetvinfo.fr/sport.rss');
+            INSERT INTO RR_FEED (ID, URL)
+            VALUES (26, 'https://www.francetvinfo.fr/decouverte.rss');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
+

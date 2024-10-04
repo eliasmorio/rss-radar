@@ -8,4 +8,6 @@
 
     <include file="classpath:db/changelog/v0.2.0/db.jpa-changelog-02.xml"/>
     <include file="classpath:db/changelog/v0.2.0/db.load-data.xml"/>
+    <include file="classpath:db/changelog/v0.2.0/db.load-data-2.xml"/>
+
 </databaseChangeLog>

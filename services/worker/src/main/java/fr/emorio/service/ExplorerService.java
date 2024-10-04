@@ -4,15 +4,19 @@ import fr.emorio.model.Article;
 import fr.emorio.model.Feed;
 import fr.emorio.repository.ArticleRepository;
 import fr.emorio.repository.FeedRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.AntPathMatcher;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +29,11 @@ public class ExplorerService {
     private final FeedRepository feedRepository;
     private final ArticleRepository articleRepository;
     private final RabbitTemplate rabbitTemplate;
+    @Value("${banned.urls}")
+    private String[] bannedUrls;
+
+    @PostConstruct
+    public void init() { log.info("Banned URLs: {}", Arrays.toString(bannedUrls)); }
 
     public void explore(Long articleId) {
         Article article = articleRepository.findById(articleId).
@@ -35,9 +44,9 @@ public class ExplorerService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
     public void explore(Article article) throws IOException {
+        AntPathMatcher matcher = new AntPathMatcher();
         Document document = Jsoup.connect(article.getLink())
                 .userAgent("curl/7.64.1")
                 .get();
@@ -52,7 +61,10 @@ public class ExplorerService {
 
         for (Element link : rssLinks) {
             String feedUrl = link.attr("href");
-            if (feedRepository.existsByUrl(feedUrl)) {
+            if (feedUrl.isEmpty()
+                    || Arrays.stream(bannedUrls).anyMatch(bannedUrl -> matcher.match(bannedUrl, feedUrl))
+                    || feedRepository.existsByUrl(feedUrl)
+            ) {
                 continue;
             }
 
@@ -60,6 +72,7 @@ public class ExplorerService {
 
             Feed feed = Feed.builder()
                     .url(feedUrl)
+                    .sourceArticle(article)
                     .build();
             feedRepository.save(feed);
             rabbitTemplate.convertAndSend("crawl-queue", feed.getId());
