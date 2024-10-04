@@ -15,12 +15,15 @@ spec:
     spec:
       containers:
       - name: web-api
-        image: ghcr.io/eliasmorio/rss-radar-rewrite/web-api:4d9765f3b1a6278ad65b66396861e5d57ed0e710
+        image: ghcr.io/eliasmorio/rss-radar-rewrite/web-api:${version}
         ports:
           - containerPort: 80
         env:
           - name: DATASOURCE_URL
-            value: "jdbc:postgresql://89.168.63.72:5432/rss-radar"
+            valueFrom:
+              configMapKeyRef:
+                key: url
+                name: rss-radar-postgres
           - name: DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:

@@ -19,3 +19,4 @@ jobs:
     uses: ./.github/workflows/service-workflow.yml
     with:
       service: web-api
+      tag: ${{ github.event.release.tag_name }}

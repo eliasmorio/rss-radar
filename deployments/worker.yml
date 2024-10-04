@@ -15,10 +15,13 @@ spec:
     spec:
       containers:
       - name: worker
-        image: ghcr.io/eliasmorio/rss-radar-rewrite/worker:96b44cdf65b65ff7d5a46fa1e4fafc7841f63953
+        image: ghcr.io/eliasmorio/rss-radar-rewrite/worker:${version}
         env:
           - name: DATASOURCE_URL
-            value: "jdbc:postgresql://89.168.63.72:5432/rss-radar"
+            valueFrom:
+              configMapKeyRef:
+                key: url
+                name: rss-radar-postgres
           - name: DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:

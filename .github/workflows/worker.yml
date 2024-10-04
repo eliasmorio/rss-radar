@@ -1,13 +1,8 @@
 name: Worker
 
 on:
-  push:
-    branches: [develop]
-    paths:
-      - services/worker/**
-      - libs/common/**
-      - .github/workflows/worker.yml
   release:
+    types: [published]
     branches: [main]
     paths:
       - services/worker/**
@@ -15,8 +10,10 @@ on:
       - .github/workflows/worker.yml
 
 
+
 jobs:
   run:
     uses: ./.github/workflows/service-workflow.yml
     with:
       service: worker
+      tag: ${{ github.event.release.tag_name }}
