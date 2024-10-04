@@ -4,9 +4,6 @@ name: Frontend
 on:
   release:
     types: [published]
-    paths:
-      - services/frontend/**
-      - .github/workflows/frontend.yml
 
 jobs:
   run:

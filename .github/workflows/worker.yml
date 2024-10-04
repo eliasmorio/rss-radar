@@ -4,12 +4,6 @@ on:
   release:
     types: [published]
     branches: [main]
-    paths:
-      - services/worker/**
-      - libs/common/**
-      - .github/workflows/worker.yml
-
-
 
 jobs:
   run:

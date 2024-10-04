@@ -3,10 +3,6 @@ name: Web API
 on:
   release:
     branches: [main]
-    paths:
-      - services/web-api/**
-      - libs/common/**
-      - .github/workflows/web-api.yml
 
 jobs:
   run:
