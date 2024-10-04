@@ -7,7 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     
   rabbitmq:
     host: "rabbitmq"
@@ -18,3 +18,6 @@ spring:
   liquibase:
     change-log: classpath*:db/changelog/db.changelog-master.xml
     enabled: true
+
+banned:
+  urls: "https://dwh.lequipe.fr/api/edito/rss?path=/**"
