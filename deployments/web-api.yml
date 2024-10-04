@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-api
+  namespace: rss-radar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-api
+  template:
+    metadata:
+      labels:
+        app: web-api
+    spec:
+      containers:
+      - name: web-api
+        image: ghcr.io/eliasmorio/rss-radar-rewrite/web-api:4d9765f3b1a6278ad65b66396861e5d57ed0e710
+        ports:
+          - containerPort: 80
+        env:
+          - name: DATASOURCE_URL
+            value: "jdbc:postgresql://89.168.63.72:5432/rss-radar"
+          - name: DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: rss-radar-postgres
+                key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-api
+  namespace: rss-radar
+spec:
+  selector:
+    app: web-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer

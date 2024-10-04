@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  namespace: rss-radar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - name: worker
+        image: ghcr.io/eliasmorio/rss-radar-rewrite/worker:96b44cdf65b65ff7d5a46fa1e4fafc7841f63953
+        env:
+          - name: DATASOURCE_URL
+            value: "jdbc:postgresql://89.168.63.72:5432/rss-radar"
+          - name: DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: rss-radar-postgres
+                key: password
