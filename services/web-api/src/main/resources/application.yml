@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: ${DATASOURCE_URL}
-    username: rss-radar
+    username: ${DATASOURCE_USERNAME:rss-radar}
     password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -10,10 +10,10 @@ spring:
     show-sql: true
 
   rabbitmq:
-    host: "rabbitmq"
+    host: ${RABBITMQ_HOST:rabbitmq}
     port: 5672
-    username: "guest"
-    password: "guest"
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
 
   liquibase:
     change-log: classpath*:db/changelog/db.changelog-master.xml
