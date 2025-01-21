@@ -15,7 +15,7 @@ public class SchedulerService {
     private final FeedRepository feedRepository;
     private final RabbitTemplate rabbitTemplate;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 25 * * * *")
     public void schedule() {
         feedRepository.findAll()
                 .forEach(feed -> {
