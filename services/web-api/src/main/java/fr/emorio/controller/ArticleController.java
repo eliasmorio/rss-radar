@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/articles")
+@RequestMapping("/api/articles")
 @CrossOrigin(origins = "${cross.origin.url}")
 @RequiredArgsConstructor
 public class ArticleController {
