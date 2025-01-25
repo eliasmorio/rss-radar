@@ -26,10 +26,12 @@ import static java.time.ZoneOffset.UTC;
 @Service
 @RequiredArgsConstructor
 public class CrawlerService {
+    private static final String USER_AGENT = "Mozilla/5.0";
     private final FeedRepository feedRepository;
     private final ArticleRepository articleRepository;
     private final FeedParserFactory feedParserFactory;
     private final RabbitTemplate rabbitTemplate;
+    private final LanguageDetectionService languageDetectionService;
     
     public void crawl(Long feedId) throws RuntimeException, IOException {
         Feed feed = feedRepository.findById(feedId).orElseThrow(() -> new RuntimeException("Feed not found"));
@@ -45,6 +47,10 @@ public class CrawlerService {
         }
 
         Set<Article> articles = feedParser.parseFeed(feedContent);
+
+        for (Article article : articles) {
+            article.setLanguage(languageDetectionService.detectLanguage(article));
+        }
 
         log.info("Found {} articles for feed {}", articles.size(), feed);
 
@@ -63,7 +69,9 @@ public class CrawlerService {
 
     private Document fetchFeedContent(String url) throws IOException {
         try {
-            return Jsoup.connect(url).get();
+            return Jsoup.connect(url)
+                    .userAgent(USER_AGENT)
+                    .get();
         }
         catch (IOException e) {
             log.error("Error while fetching feed content from {}", url, e);
