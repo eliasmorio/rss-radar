@@ -6,7 +6,15 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet id="1737890243152-2" author="emorio">
-        <modifyDataType tableName="rr_article" columnName="language" newDataType="regconfig"/>
+        <addColumn tableName="rr_article">
+            <column name="lang_config" type="regconfig" defaultValue="pg_catalog.english">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <sql>
+            UPDATE rr_article SET lang_config = language::regconfig;
+        </sql>
+        <dropColumn tableName="rr_article" columnName="language"/>
+        <renameColumn tableName="rr_article" oldColumnName="lang_config" newColumnName="language"/>
     </changeSet>
-
 </databaseChangeLog>
