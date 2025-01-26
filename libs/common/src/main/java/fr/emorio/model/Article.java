@@ -25,7 +25,7 @@ public class Article {
     private String link;
     @Column(name = "publication_date")
     private LocalDateTime publicationDate;
-    @Column(length = 50)
+    @Column(length = 50, nullable = false, columnDefinition = "REQCONFIG")
     private String language;
     @ManyToOne
     private Feed feed;
