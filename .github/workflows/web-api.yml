@@ -2,6 +2,7 @@ name: Web API
 
 on:
   release:
+    types: [published]
     branches: [main]
 
 jobs:

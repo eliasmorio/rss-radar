@@ -4,6 +4,7 @@ name: Frontend
 on:
   release:
     types: [published]
+    branches: [main]
 
 jobs:
   run:
