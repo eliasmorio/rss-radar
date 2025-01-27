@@ -7,7 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
 
   rabbitmq:
     host: ${RABBITMQ_HOST:rabbitmq}
