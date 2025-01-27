@@ -42,7 +42,8 @@ jobs:
         run: |
           docker tag ${{ github.sha }} ghcr.io/${{ github.repository }}/frontend:${{ github.sha }}
           docker push ghcr.io/${{ github.repository }}/frontend:${{ github.sha }}
-          docker tag ${{ github.sha }} ghcr.io/${{ github.repository }}/frontend:latest
+          docker tag ${{ github.sha }} ghcr.io/${{ github.repository }}/frontend:${{ github.event.release.tag_name }}
+          docker push ghcr.io/${{ github.repository }}/frontend:${{ github.event.release.tag_name }}
         
       
     
