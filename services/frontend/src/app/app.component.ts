@@ -8,5 +8,5 @@ import {LayoutComponent} from './layout/layout.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'RssRadar';
 }
