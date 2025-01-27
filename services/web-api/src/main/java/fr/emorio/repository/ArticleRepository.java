@@ -14,11 +14,11 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, L
     @Query(
             value = """
             SELECT * FROM rr_article article
-            WHERE to_tsvector(article.title || ' ' || article.body) @@ to_tsquery(:query)\s
+            WHERE to_tsvector(article.title || ' ' || article.body) @@ plainto_tsquery(:query)\s
        \s""",
             countQuery = """
             SELECT COUNT(*) FROM rr_article article
-            WHERE to_tsvector(article.title || ' ' || article.body) @@ to_tsquery(:query)\s
+            WHERE to_tsvector(article.title || ' ' || article.body) @@ plainto_tsquery(:query)\s
        \s""",
             nativeQuery = true)
     Page<Article> searchArticlesByPage(String query,
