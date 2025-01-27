@@ -2,6 +2,9 @@ name: Frontend
 # Angular frontend workflow
 
 on:
+  push:
+    branches:
+      - develop
   release:
     types: [published]
     branches: [main]
