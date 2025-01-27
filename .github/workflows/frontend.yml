@@ -35,6 +35,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: LS
+        run: ls -la
+
       - name: Build docker image
         run: docker build . -t ${{ github.sha }}
 
