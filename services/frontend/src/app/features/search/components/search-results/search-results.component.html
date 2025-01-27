@@ -1,0 +1,42 @@
+<div *ngIf="articles.length" class="results-container">
+    <div *ngFor="let article of articles" class="article-card">
+        <!--        <div *ngIf="article.imageLink" class="image-container" [style.backgroundImage]="'url(' + article.imageLink + ')'"></div>-->
+
+        <div class="content">
+            <div class="main-content">
+                <a
+                        [href]="article.link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="article-title"
+                >
+                    {{ article.title }}
+                </a>
+                <p class="article-description" [innerHTML]="article.body"></p>
+            </div>
+
+            <!--          <div *ngIf="article.audioLink" class="audio-container">-->
+            <!--            <audio controls [src]="article.audioLink"></audio>-->
+            <!--          </div>-->
+
+            <div class="article-footer">
+                <p class="publication-date">{{ article.publicationDate | date: 'longDate' }}</p>
+                <div class="source-info">
+                    <img
+                            *ngIf="article.feed?.url"
+                            [src]="faviconUrl(article.feed!.url!)"
+                            alt="Favicon"
+                            class="favicon"
+                    />
+                    <span class="source-name">
+                {{ article.feed?.title || 'Unknown Source' }}
+              </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!articles.length" class="no-results">
+    <p>No articles found.</p>
+</div>

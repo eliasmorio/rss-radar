@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { SearchComponent } from './search/search.component';
+import {SearchPageComponent} from './features/search/search-page/search-page.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: SearchComponent,
-  },
+    component: SearchPageComponent
+  }
 ];

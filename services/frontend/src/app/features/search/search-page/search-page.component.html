@@ -1,0 +1,20 @@
+<div class="search-container">
+
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
+
+    <app-spinner *ngIf="isLoading"></app-spinner>
+    <!--  <app-error-message *ngIf="errorMessage" [message]="errorMessage"></app-error-message>-->
+
+    <app-search-results
+      *ngIf="!isLoading && !errorMessage"
+      [articles]="articles"
+    ></app-search-results>
+
+  <app-pagination
+    *ngIf="!isLoading && !errorMessage && articles.length > 0"
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
+
+</div>
