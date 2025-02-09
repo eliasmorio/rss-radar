@@ -14,16 +14,53 @@ spec:
         app: worker
     spec:
       containers:
-      - name: worker
-        image: ghcr.io/eliasmorio/rss-radar-rewrite/worker:${version}
-        env:
-          - name: DATASOURCE_URL
-            valueFrom:
-              configMapKeyRef:
-                key: url
-                name: rss-radar-postgres
-          - name: DATASOURCE_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: rss-radar-postgres
-                key: password
+        - name: worker
+          image: ghcr.io/eliasmorio/rss-radar/worker:v1.0.3
+          env:
+#              OTEL_TRACES_EXPORTER=logging \
+            #  OTEL_METRICS_EXPORTER=logging \
+            #  OTEL_LOGS_EXPORTER=logging \
+            #  OTEL_METRIC_EXPORT_INTERVAL=15000
+#            - name: OTEL_SERVICE_NAME
+#              value: worker
+#            - name: OTEL_LOGS_EXPORTER
+#              value: debug
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector-collector.observability.svc.cluster.local:4318"
+            - name: DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: url
+                  name: rss-radar-postgres
+            - name: DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rss-radar-postgres
+                  key: password
+            - name: DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: username
+                  name: rss-radar-postgres
+            - name: RABBITMQ_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: host
+                  name: rabbitmq-cluster-default-user
+            - name: RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-cluster-default-user
+                  key: username
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-cluster-default-user
+                  key: password
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
