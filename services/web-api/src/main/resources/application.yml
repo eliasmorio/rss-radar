@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: web-api
   datasource:
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
     username: ${DATASOURCE_USERNAME:postgres}
@@ -22,3 +24,17 @@ spring:
 cross:
   origin:
     url: "*"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: 'true'
