@@ -21,3 +21,20 @@ spring:
 
 banned:
   urls: "https://dwh.lequipe.fr/api/edito/rss?path=/**"
+
+logging:
+  pattern:
+    level: "trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %p"
+  level:
+    fr.emorio: DEBUG
+
+otel:
+  propagators:
+    - tracecontext
+    - b3
+  resource:
+    attributes:
+      deployment.environment: production
+      service:
+        name: web-api
+        namespace: rss-radar

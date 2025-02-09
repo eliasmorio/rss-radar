@@ -21,6 +21,13 @@ spring:
     change-log: classpath*:db/changelog/db.changelog-master.xml
     enabled: true
 
+
+logging:
+  pattern:
+    level: "trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %p"
+  level:
+    fr.emorio: DEBUG
+
 cross:
   origin:
     url: "*"
@@ -32,9 +39,20 @@ management:
         include: prometheus
   metrics:
     tags:
-      application: ${spring.application.name}
+      application: web-api
     distribution:
       percentiles-histogram:
         http:
           server:
             requests: 'true'
+
+otel:
+  propagators:
+    - tracecontext
+    - b3
+  resource:
+    attributes:
+      deployment.environment: production
+      service:
+        name: web-api
+        namespace: rss-radar
