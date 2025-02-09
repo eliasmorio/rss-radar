@@ -36,5 +36,5 @@ otel:
     attributes:
       deployment.environment: production
       service:
-        name: web-api
+        name: worker
         namespace: rss-radar
