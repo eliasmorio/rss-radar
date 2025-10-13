@@ -8,6 +8,4 @@ resources:
   - web-api.yml
   - worker.yml
 
-commonLabels:
-  app.kubernetes.io/name: rss-radar
-  app.kubernetes.io/part-of: rss-radar
+
