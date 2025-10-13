@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: rss-radar-dev
+
+resources:
+  - ../../base
+
+namespace: dev
+
+commonLabels:
+  environment: dev
+
+images:
+  - name: ghcr.io/eliasmorio/rss-radar-rewrite/web-api
+    newTag: dev-latest
+  - name: ghcr.io/eliasmorio/rss-radar/worker
+    newTag: dev-latest

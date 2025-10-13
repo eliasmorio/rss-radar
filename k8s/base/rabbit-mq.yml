@@ -2,7 +2,6 @@ apiVersion: rabbitmq.com/v1beta1
 kind: RabbitmqCluster
 metadata:
   name: rabbitmq
-  namespace: rss-radar
 spec:
   replicas: 1
   resources:
@@ -17,20 +16,16 @@ apiVersion: rabbitmq.com/v1beta1
 kind: Queue
 metadata:
   name: explore-queue
-  namespace: rss-radar
 spec:
   name: explore-queue
   rabbitmqClusterReference:
     name: rabbitmq
-    namespace: rss-radar
 ---
 apiVersion: rabbitmq.com/v1beta1
 kind: Queue
 metadata:
   name: crawl-queue
-  namespace: rss-radar
 spec:
   name: crawl-queue
   rabbitmqClusterReference:
     name: rabbitmq
-    namespace: rss-radar
