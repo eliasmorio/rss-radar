@@ -13,13 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class MessageListener {
-    private static final String WORKER_QUEUE = "crawl-queue";
-    private static final String EXPLORE_QUEUE = "explore-queue";
 
     private final CrawlerService crawlerService;
     private final ExplorerService explorerService;
     
-    @RabbitListener(queues = WORKER_QUEUE, priority = "10")
+    @RabbitListener(queues = "${rabbitmq.crawl.queue.name}", priority = "10")
     public void listenCrawl(String message)  {
         try {
             crawlerService.crawl(Long.parseLong(message));
@@ -28,7 +26,7 @@ public class MessageListener {
         }
     }
 
-    @RabbitListener(queues = EXPLORE_QUEUE, priority = "1")
+    @RabbitListener(queues = "${rabbitmq.explore.queue.name}", priority = "1")
     public void listenExplore(String message) {
         try {
             explorerService.explore(Long.parseLong(message));

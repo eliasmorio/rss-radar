@@ -21,3 +21,7 @@ spring:
 
 banned:
   urls: "https://dwh.lequipe.fr/api/edito/rss?path=/**"
+
+rabbitmq:
+  crawl.queue.name: rss-radar.crawl.queue
+  explore.queue.name: rss-radar.explore.queue

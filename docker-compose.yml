@@ -1,16 +1,16 @@
 services:
   db_rss-radar:
-    image: postgres:16-alpine
+    image: postgres:17
     container_name: db_rss-radar
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: rss-radar
+      POSTGRES_PASSWORD: rss-radar
+      POSTGRES_DB: rss_radar
     ports:
       - "5432:5432"
     volumes:
       - db_data_rss-radar:/var/lib/postgresql/data
-  
+
   rabbitmq:
     image: rabbitmq:4-management
     container_name: rabbitmq
