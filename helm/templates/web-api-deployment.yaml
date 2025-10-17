@@ -23,7 +23,7 @@ spec:
             - containerPort: 80
           env:
             - name: DATASOURCE_URL
-              value: jdbc:postgresql://postgres-cluster:5432/rss_radar
+              value: jdbc:postgresql://postgres-cluster:5432/rss-radar
             - name: DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
