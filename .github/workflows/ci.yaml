@@ -126,6 +126,8 @@ jobs:
             - name: Build and push
               uses: docker/build-push-action@v6
               with:
+                  context: .
+                  file: ./Dockerfile
                   build-args: JAR_FILE=services/web-api/target/app.jar
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: ${{ steps.meta.outputs.tags }}
@@ -180,6 +182,8 @@ jobs:
             - name: Build and push
               uses: docker/build-push-action@v6
               with:
+                  context: .
+                  file: ./Dockerfile
                   build-args: JAR_FILE=services/worker/target/app.jar
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: ${{ steps.meta.outputs.tags }}
