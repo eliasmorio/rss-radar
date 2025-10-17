@@ -23,12 +23,9 @@ spec:
             - containerPort: 80
           env:
             - name: DATASOURCE_HOST
-              valueFrom:
-                configMapKeyRef:
-                  key: POSTGRES_HOST
-                  name: {{ .Values.references.postgresConfigMap }}
+              value: postgres-cluster
             - name: DATASOURCE_DATABASE
-              value: {{ .Values.config.datasource.database | quote }}
+              value: rss-radar
             - name: DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -40,10 +37,7 @@ spec:
                   name: {{ .Values.references.postgresSecret }}
                   key: password
             - name: RABBITMQ_HOST
-              valueFrom:
-                configMapKeyRef:
-                  key: RABBITMQ_HOST
-                  name: {{ .Values.references.rabbitmqConfigMap }}
+              value: rabbitmq-cluster
             - name: RABBITMQ_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -55,12 +49,9 @@ spec:
                   name: {{ .Values.references.rabbitmqSecret }}
                   key: password
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              valueFrom:
-                configMapKeyRef:
-                  key: OTEL_EXPORTER_OTLP_ENDPOINT
-                  name: {{ .Values.references.appConfigMap }}
+              value: http://alloy.observability.svc.cluster.local:4318
             - name: OTEL_SERVICE_NAME
-              value: {{ .Values.config.otel.webApiServiceName | quote }}
+              value: rss-radar-web-api
 ---
 apiVersion: v1
 kind: Service
