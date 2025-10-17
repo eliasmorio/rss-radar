@@ -20,10 +20,8 @@ spec:
         - name: worker
           image: {{ .Values.image.worker | quote }}
           env:
-            - name: DATASOURCE_HOST
-              value: postgres-cluster
-            - name: DATASOURCE_DATABASE
-              value: rss-radar 
+            - name: DATASOURCE_URL
+              value: jdbc:postgresql://postgres-cluster:5432/rss-radar
             - name: DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
