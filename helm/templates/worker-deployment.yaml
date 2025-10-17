@@ -1,16 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: worker
+  name: {{ include "rss-radar.fullname" . }}-worker
+  labels:
+    {{- include "rss-radar.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: worker
+      {{- include "rss-radar.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: worker
   template:
     metadata:
       labels:
-        app: worker
+        {{- include "rss-radar.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: worker
     spec:
       containers:
         - name: worker
