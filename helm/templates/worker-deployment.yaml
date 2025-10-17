@@ -21,7 +21,7 @@ spec:
           image: {{ .Values.image.worker | quote }}
           env:
             - name: DATASOURCE_URL
-              value: jdbc:postgresql://postgres-cluster:5432/rss-radar
+              value: jdbc:postgresql://postgres-cluster:5432/rss_radar
             - name: DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -50,8 +50,8 @@ spec:
               value: rss-radar-worker
           resources:
             requests:
-              memory: {{ .Values.resources.worker.requests.memory | quote }}
-              cpu: {{ .Values.resources.worker.requests.cpu | quote }}
+              memory: 512Mi
+              cpu: 250m
             limits:
-              memory: {{ .Values.resources.worker.limits.memory | quote }}
-              cpu: {{ .Values.resources.worker.limits.cpu | quote }}
+              memory: 1024Mi
+              cpu: 500m
