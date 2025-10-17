@@ -1,8 +1,6 @@
 spring:
   datasource:
-    host: ${DATASOURCE_HOST}
-    port: 5432
-    database: ${DATASOURCE_DATABASE}
+    url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME:rss-radar}
     password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
