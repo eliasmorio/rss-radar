@@ -4,10 +4,13 @@ on:
   release:
     types: [published]
     branches: [main]
+  push:
+    branches:
+      - feat/helm
 
 jobs:
   run:
     uses: ./.github/workflows/service-workflow.yml
     with:
       service: web-api
-      tag: ${{ github.event.release.tag_name }}
+      tag: ${{ github.event.release.tag_name || 'develop' }}
