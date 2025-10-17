@@ -1,0 +1,28 @@
+replicaCount: 1
+image:
+  webApi: ghcr.io/eliasmorio/rss-radar-rewrite/web-api:latest
+  worker: ghcr.io/eliasmorio/rss-radar/worker:latest
+service:
+  type: LoadBalancer
+  port: 80
+config:
+  datasource:
+    database: rss-radar
+  otel:
+    endpoint: ""
+    webApiServiceName: web-api
+    workerServiceName: worker
+references:
+  postgresConfigMap: postgres-config
+  rabbitmqConfigMap: rabbitmq-config
+  postgresSecret: rss-radar.postgres-cluster.credentials.postgresql.acid.zalan.do
+  rabbitmqSecret: rabbitmq-cluster-default-user
+  appConfigMap: app-config
+resources:
+  worker:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1024Mi"
+      cpu: "500m"

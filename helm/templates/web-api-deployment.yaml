@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-api
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: web-api
@@ -14,56 +14,49 @@ spec:
     spec:
       containers:
         - name: web-api
-          image: ghcr.io/eliasmorio/rss-radar-rewrite/web-api:latest
+          image: {{ .Values.image.webApi | quote }}
           ports:
             - containerPort: 80
           env:
-            # DATABASE
             - name: DATASOURCE_HOST
               valueFrom:
                 configMapKeyRef:
                   key: POSTGRES_HOST
-                  name: postgres-config
-
+                  name: {{ .Values.references.postgresConfigMap }}
             - name: DATASOURCE_DATABASE
-              value: rss-radar
-
+              value: {{ .Values.config.datasource.database | quote }}
             - name: DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: rss-radar.postgres-cluster.credentials.postgresql.acid.zalan.do
+                  name: {{ .Values.references.postgresSecret }}
                   key: username
             - name: DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: rss-radar.postgres-cluster.credentials.postgresql.acid.zalan.do
+                  name: {{ .Values.references.postgresSecret }}
                   key: password
-
-            # RABBITMQ
             - name: RABBITMQ_HOST
               valueFrom:
                 configMapKeyRef:
                   key: RABBITMQ_HOST
-                  name: rabbitmq-config
+                  name: {{ .Values.references.rabbitmqConfigMap }}
             - name: RABBITMQ_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-cluster-default-user
+                  name: {{ .Values.references.rabbitmqSecret }}
                   key: username
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-cluster-default-user
+                  name: {{ .Values.references.rabbitmqSecret }}
                   key: password
-
-            # OTEL
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               valueFrom:
                 configMapKeyRef:
                   key: OTEL_EXPORTER_OTLP_ENDPOINT
-                  name: app-config
+                  name: {{ .Values.references.appConfigMap }}
             - name: OTEL_SERVICE_NAME
-              value: web-api
+              value: {{ .Values.config.otel.webApiServiceName | quote }}
 ---
 apiVersion: v1
 kind: Service
@@ -74,6 +67,6 @@ spec:
     app: web-api
   ports:
     - protocol: TCP
-      port: 80
+      port: {{ .Values.service.port }}
       targetPort: 80
-  type: LoadBalancer
+  type: {{ .Values.service.type }}

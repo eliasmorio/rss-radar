@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: worker
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: worker
@@ -14,86 +14,59 @@ spec:
     spec:
       containers:
         - name: worker
-          image: ghcr.io/eliasmorio/rss-radar/worker:latest
+          image: {{ .Values.image.worker | quote }}
           env:
-            # DATABASE
             - name: DATASOURCE_HOST
               valueFrom:
                 configMapKeyRef:
                   key: POSTGRES_HOST
-                  name: postgres-config
-
+                  name: {{ .Values.references.postgresConfigMap }}
             - name: DATASOURCE_DATABASE
-              value: rss-radar
-
+              value: {{ .Values.config.datasource.database | quote }}
             - name: DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: rss-radar.postgres-cluster.credentials.postgresql.acid.zalan.do
+                  name: {{ .Values.references.postgresSecret }}
                   key: username
             - name: DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: rss-radar.postgres-cluster.credentials.postgresql.acid.zalan.do
+                  name: {{ .Values.references.postgresSecret }}
                   key: password
-
-            # RABBITMQ
             - name: RABBITMQ_HOST
               valueFrom:
                 configMapKeyRef:
                   key: RABBITMQ_HOST
-                  name: rabbitmq-config
+                  name: {{ .Values.references.rabbitmqConfigMap }}
             - name: RABBITMQ_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-cluster-default-user
+                  name: {{ .Values.references.rabbitmqSecret }}
                   key: username
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-cluster-default-user
+                  name: {{ .Values.references.rabbitmqSecret }}
                   key: password
-
-            # OTEL
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               valueFrom:
                 configMapKeyRef:
                   key: OTEL_EXPORTER_OTLP_ENDPOINT
-                  name: app-config
+                  name: {{ .Values.references.appConfigMap }}
             - name: DATASOURCE_URL
               valueFrom:
                 configMapKeyRef:
                   key: url
-                  name: app-config
+                  name: {{ .Values.references.appConfigMap }}
             - name: OTEL_SERVICE_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: app-config
+                  name: {{ .Values.references.appConfigMap }}
                   key: OTEL_SERVICE_NAME
-            - name: DATASOURCE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: rss-radar.postgres-cluster.credentials.postgresql.acid.zalan.do
-                  key: username
-            - name: RABBITMQ_HOST
-              valueFrom:
-                configMapKeyRef:
-                  key: RABBITMQ_HOST
-                  name: rabbitmq-config
-            - name: RABBITMQ_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: rabbitmq-cluster-default-user
-                  key: username
-            - name: RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: rabbitmq-cluster-default-user
-                  key: password
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "250m"
+              memory: {{ .Values.resources.worker.requests.memory | quote }}
+              cpu: {{ .Values.resources.worker.requests.cpu | quote }}
             limits:
-              memory: "1024Mi"
-              cpu: "500m"
+              memory: {{ .Values.resources.worker.limits.memory | quote }}
+              cpu: {{ .Values.resources.worker.limits.cpu | quote }}
