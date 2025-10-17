@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: {{ .Values.image.worker | quote }}
+          image: "ghcr.io/eliasmorio/rss-radar/worker:{{ .Chart.AppVersion }}"
           env:
             - name: DATASOURCE_URL
               value: jdbc:postgresql://postgres-cluster:5432/rss_radar

@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: web-api
-          image: {{ .Values.image.webApi | quote }}
+          image: "ghcr.io/eliasmorio/rss-radar/web-api:{{ .Chart.AppVersion }}"
           ports:
             - containerPort: 80
           env:
