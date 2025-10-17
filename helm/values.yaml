@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  webApi: ghcr.io/eliasmorio/rss-radar-rewrite/web-api:latest
+  webApi: ghcr.io/eliasmorio/rss-radar/web-api:latest
   worker: ghcr.io/eliasmorio/rss-radar/worker:latest
 service:
   type: LoadBalancer
