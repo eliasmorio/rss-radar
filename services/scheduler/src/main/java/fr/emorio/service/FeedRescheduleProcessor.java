@@ -24,7 +24,7 @@ public class FeedRescheduleProcessor {
             log.debug("Successfully sent feed ID {} to queue", feed.getId());
         } catch (Exception e) {
             log.error("Failed to send feed ID {} to queue: {}", feed.getId(), e.getMessage(), e);
-            throw new RuntimeException("Failed to reschedule feed " + feed.getId(), e);
+            throw new FeedRescheduleException("Failed to reschedule feed " + feed.getId(), e);
         }
     }
 }
