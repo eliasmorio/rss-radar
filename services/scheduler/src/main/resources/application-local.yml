@@ -1,18 +1,9 @@
+# Import common local configuration
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/rss_radar
-    username: rss-radar
-    password: rss-radar
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+  config:
+    import: classpath:application-local.yml
 
-# Pagination configuration for local development
+# Service-specific local overrides
 batch:
   page:
     size: 50
-logging:
-  level:
-    fr.emorio: DEBUG
