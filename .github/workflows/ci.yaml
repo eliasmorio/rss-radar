@@ -37,6 +37,7 @@ jobs:
   docker-frontend:
     runs-on: ubuntu-latest
     needs: [test-services]
+    if: github.event_name != 'pull_request'
     steps:
       - name: Docker Metadata
         id: meta
@@ -79,6 +80,7 @@ jobs:
   docker-web-api:
     runs-on: ubuntu-latest
     needs: [test-services]
+    if: github.event_name != 'pull_request'
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -133,6 +135,7 @@ jobs:
   docker-worker:
     runs-on: ubuntu-latest
     needs: [test-services]
+    if: github.event_name != 'pull_request'
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -186,6 +189,7 @@ jobs:
   docker-scheduler:
     runs-on: ubuntu-latest
     needs: [test-services]
+    if: github.event_name != 'pull_request'
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
