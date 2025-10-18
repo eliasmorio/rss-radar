@@ -45,11 +45,11 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/frontend
           tags: |
-            type=raw,value=dev-{{sha}},enable={{is_default_branch == false && github.ref_name == 'develop'}}
-            type=raw,value=develop,enable={{is_default_branch == false && github.ref_name == 'develop'}}
-            type=raw,value=v{{version}},enable={{is_default_branch == true}}
-            type=raw,value=prod-v{{version}}-{{sha}},enable={{is_default_branch == true}}
-            type=raw,value={{branch}}-{{sha}},enable={{is_default_branch == false && github.ref_name != 'develop'}}
+            type=raw,value=dev-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
+            type=raw,value=develop,enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
+            type=raw,value=v{{version}},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=prod-v{{version}}-{{sha}},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value={{branch}}-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name != 'develop' }}
 
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -100,11 +100,11 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/web-api
           tags: |
-            type=raw,value=dev-{{sha}},enable={{is_default_branch == false && github.ref_name == 'develop'}}
-            type=raw,value=develop,enable={{is_default_branch == false && github.ref_name == 'develop'}}
-            type=raw,value=v{{version}},enable={{is_default_branch == true}}
-            type=raw,value=prod-v{{version}}-{{sha}},enable={{is_default_branch == true}}
-            type=raw,value={{branch}}-{{sha}},enable={{is_default_branch == false && github.ref_name != 'develop'}}
+            type=raw,value=dev-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
+            type=raw,value=develop,enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
+            type=raw,value=v{{version}},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=prod-v{{version}}-{{sha}},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value={{branch}}-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name != 'develop' }}
 
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -153,11 +153,11 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/worker
           tags: |
-            type=raw,value=dev-{{sha}},enable={{is_default_branch == false && github.ref_name == 'develop'}}
-            type=raw,value=develop,enable={{is_default_branch == false && github.ref_name == 'develop'}}
-            type=raw,value=v{{version}},enable={{is_default_branch == true}}
-            type=raw,value=prod-v{{version}}-{{sha}},enable={{is_default_branch == true}}
-            type=raw,value={{branch}}-{{sha}},enable={{is_default_branch == false && github.ref_name != 'develop'}}
+            type=raw,value=dev-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
+            type=raw,value=develop,enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
+            type=raw,value=v{{version}},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=prod-v{{version}}-{{sha}},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value={{branch}}-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name != 'develop' }}
 
       - name: Login to GHCR
         uses: docker/login-action@v3
