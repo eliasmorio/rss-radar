@@ -2,6 +2,7 @@ package fr.emorio.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -25,7 +26,11 @@ public class Article {
     private String link;
     @Column(name = "publication_date")
     private LocalDateTime publicationDate;
-    @Column(length = 50, nullable = false, columnDefinition = "REQCONFIG")
+    @Column(name = "language", nullable = false)
+    @ColumnTransformer(
+        read = "language::text",
+        write = "?::regconfig"
+    )
     private String language;
     @ManyToOne
     private Feed feed;
