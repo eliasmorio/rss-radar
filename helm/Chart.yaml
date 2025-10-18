@@ -1,6 +1,0 @@
-apiVersion: v2
-name: rss-radar
-description: Helm chart for rss-radar components
-type: application
-version: "0.1.1"
-appVersion: "1.1.0"
