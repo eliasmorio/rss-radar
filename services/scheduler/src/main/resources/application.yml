@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: rss-radar-scheduler
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rss_radar
+    username: ${DB_USERNAME:rss-radar}
+    password: ${DB_PASSWORD:rss-radar}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+  batch:
+    job:
+      enabled: true
+      name: rescheduleFeedsJob
+    jdbc:
+      initialize-schema: never # Use Liquibase instead of Spring Boot auto-initialization
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VHOST:/}
+
+  liquibase:
+    change-log: classpath*:db/changelog/db.changelog-master.xml
+    enabled: true
+
+rabbitmq:
+  crawl.queue.name: rss-radar.crawl.queue
+
+logging:
+  level:
+    fr.emorio: INFO
+    org.springframework.batch: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+batch:
+  page:
+    size: 100
