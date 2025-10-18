@@ -14,6 +14,7 @@ spring:
     port: 5672
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VHOST:/}
 
   liquibase:
     change-log: classpath*:db/changelog/db.changelog-master.xml
