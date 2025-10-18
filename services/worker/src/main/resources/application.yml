@@ -1,23 +1,27 @@
 spring:
   datasource:
     url: ${DATASOURCE_URL}
-    username: ${DATASOURCE_USERNAME:rss-radar}
+    username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: false
-    
+
   rabbitmq:
     host: ${RABBITMQ_HOST:rabbitmq}
     port: 5672
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
-  
+
   liquibase:
     change-log: classpath*:db/changelog/db.changelog-master.xml
     enabled: true
 
 banned:
   urls: "https://dwh.lequipe.fr/api/edito/rss?path=/**"
+
+rabbitmq:
+  crawl.queue.name: rss-radar.crawl.queue
+  explore.queue.name: rss-radar.explore.queue

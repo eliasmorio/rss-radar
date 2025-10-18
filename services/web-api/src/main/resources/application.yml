@@ -1,9 +1,7 @@
 spring:
   datasource:
-    host: ${DATASOURCE_HOST}
-    port: 5432
-    database: ${DATASOURCE_DATABASE}
-    username: ${DATASOURCE_USERNAME:rss-radar}
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -12,10 +10,10 @@ spring:
     show-sql: false
 
   rabbitmq:
-    host: ${RABBITMQ_HOST:rabbitmq}
+    host: ${RABBITMQ_HOST}
     port: 5672
-    username: ${RABBITMQ_USERNAME:guest}
-    password: ${RABBITMQ_PASSWORD:guest}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
 
   liquibase:
     change-log: classpath*:db/changelog/db.changelog-master.xml
@@ -24,3 +22,6 @@ spring:
 cross:
   origin:
     url: "*"
+
+rabbitmq:
+  crawl.queue.name: rss-radar.crawl.queue

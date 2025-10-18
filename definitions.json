@@ -45,7 +45,7 @@
   "policies": [],
   "queues": [
     {
-      "name": "explore-queue",
+      "name": "rss-radar.explore.queue",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
@@ -54,7 +54,7 @@
       }
     },
     {
-      "name": "crawl-queue",
+      "name": "rss-radar.crawl.queue",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
