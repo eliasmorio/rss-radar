@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="WebApiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <option name="ACTIVE_PROFILES" value="local,localenv" />
+    <option name="SCHEDULED_DEBUGGER" value="true" />
     <module name="web-api" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="fr.emorio.WebApiApplication" />
     <extension name="coverage">
