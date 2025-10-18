@@ -45,10 +45,10 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/frontend
           tags: |
-            type=raw,value=dev-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
+            type=raw,value=dev-${{ github.run_number }},enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
             type=raw,value=develop,enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
             type=raw,value=v{{version}},enable=${{ github.ref == 'refs/heads/main' }}
-            type=raw,value=prod-v{{version}}-{{sha}},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=prod-${{ github.run_number }},enable=${{ github.ref == 'refs/heads/main' }}
             type=raw,value={{branch}}-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name != 'develop' }}
 
       - name: Checkout sources
@@ -100,10 +100,10 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/web-api
           tags: |
-            type=raw,value=dev-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
+            type=raw,value=dev-${{ github.run_number }},enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
             type=raw,value=develop,enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
             type=raw,value=v{{version}},enable=${{ github.ref == 'refs/heads/main' }}
-            type=raw,value=prod-v{{version}}-{{sha}},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=prod-${{ github.run_number }},enable=${{ github.ref == 'refs/heads/main' }}
             type=raw,value={{branch}}-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name != 'develop' }}
 
       - name: Login to GHCR
@@ -153,10 +153,10 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/worker
           tags: |
-            type=raw,value=dev-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
+            type=raw,value=dev-${{ github.run_number }},enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
             type=raw,value=develop,enable=${{ github.ref != 'refs/heads/main' && github.ref_name == 'develop' }}
             type=raw,value=v{{version}},enable=${{ github.ref == 'refs/heads/main' }}
-            type=raw,value=prod-v{{version}}-{{sha}},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=prod-${{ github.run_number }},enable=${{ github.ref == 'refs/heads/main' }}
             type=raw,value={{branch}}-{{sha}},enable=${{ github.ref != 'refs/heads/main' && github.ref_name != 'develop' }}
 
       - name: Login to GHCR
