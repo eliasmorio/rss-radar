@@ -9,5 +9,3 @@ spring:
 banned:
   urls: "https://dwh.lequipe.fr/api/edito/rss?path=/**"
 
-rabbitmq:
-  explore.queue.name: rss-radar.explore.queue
