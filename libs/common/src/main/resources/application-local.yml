@@ -1,0 +1,4 @@
+# Local development overrides
+logging:
+  level:
+    fr.emorio: DEBUG

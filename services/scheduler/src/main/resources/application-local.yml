@@ -2,3 +2,8 @@
 spring:
   config:
     import: classpath:application-local.yml
+
+# Service-specific local overrides
+batch:
+  page:
+    size: 50

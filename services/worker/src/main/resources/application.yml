@@ -1,28 +1,13 @@
+# Import common configuration
 spring:
-  datasource:
-    url: ${DATASOURCE_URL}
-    username: ${DATASOURCE_USERNAME}
-    password: ${DATASOURCE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: false
+  config:
+    import: classpath:application-common.yml
+  application:
+    name: rss-radar-worker
 
-  rabbitmq:
-    host: ${RABBITMQ_HOST:rabbitmq}
-    port: 5672
-    username: ${RABBITMQ_USERNAME:guest}
-    password: ${RABBITMQ_PASSWORD:guest}
-    virtual-host: ${RABBITMQ_VHOST:/}
-
-  liquibase:
-    change-log: classpath*:db/changelog/db.changelog-master.xml
-    enabled: true
-
+# Service-specific configuration
 banned:
   urls: "https://dwh.lequipe.fr/api/edito/rss?path=/**"
 
 rabbitmq:
-  crawl.queue.name: rss-radar.crawl.queue
   explore.queue.name: rss-radar.explore.queue

@@ -15,4 +15,6 @@
     <include file="classpath:db/changelog/v0.4.0/db.jpa-changelog-05.xml"/>
     <include file="classpath:db/changelog/v0.4.0/db.add-search-index.xml"/>
 
+    <include file="classpath:db/changelog/v1.2.0/db.batch-tables.xml"/>
+
 </databaseChangeLog>

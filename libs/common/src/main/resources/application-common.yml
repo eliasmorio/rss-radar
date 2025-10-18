@@ -1,0 +1,31 @@
+# Common configuration shared across all services
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/rss_radar}
+    username: ${DATABASE_USERNAME:rss-radar}
+    password: ${DATABASE_PASSWORD:rss-radar}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VHOST:/}
+  liquibase:
+    change-log: classpath*:db/changelog/db.changelog-master.xml
+    enabled: true
+
+# Common RabbitMQ queue configuration
+rabbitmq:
+  crawl.queue.name: rss-radar.crawl.queue
+
+# Common logging configuration
+logging:
+  level:
+    fr.emorio: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

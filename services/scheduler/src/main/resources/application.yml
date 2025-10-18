@@ -1,0 +1,17 @@
+# Import common configuration
+spring:
+  config:
+    import: classpath:application-common.yml
+  application:
+    name: rss-radar-scheduler
+  batch:
+    job:
+      enabled: true
+      name: rescheduleFeedsJob
+    jdbc:
+      initialize-schema: never # Use Liquibase instead of Spring Boot auto-initialization
+
+# Service-specific batch configuration
+batch:
+  page:
+    size: 100
